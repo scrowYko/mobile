@@ -1,8 +1,11 @@
 
+
 export const Soma = (memory, display, setMemory, setDisplay, setOperation) => {
+  memory = parseInt(memory)
+  display = parseInt(display)
   setMemory(memory + display)
   console.log(memory)
-  setDisplay(0)
+  setDisplay(memory)
   setOperation('+')
   return true;
 };

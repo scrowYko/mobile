@@ -33,7 +33,7 @@ const style = function () {
       alignItems: "center",
     },
     Text: {
-      fontSize: 60,
+      fontSize: 55,
     },
     display: {
       width: '90%',
@@ -57,7 +57,7 @@ export default PrimeiraFuncao = function () {
   return (
     <View style={style().container}>
       <View style={style().display}>
-        <Text style={style().}>{display}</Text>
+        <Text style={style().displayText}>{display}</Text>
       </View>
       <View style={style().containerNumber}>
         <Pressable
