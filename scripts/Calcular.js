@@ -46,6 +46,12 @@ export const atualizarDisplay = (display, value, setDisplay) => {
     return true
 }
 
+export const reset(setDisplay,setMemory,setOperation){
+  setDisplay(0)
+  setMemory(0)
+  setOperation('')
+}
+
 export const mostrarResultado = (display, memory, setMemory, lastOperation, setDisplay, setOperation) => {
   if (lastOperation == '+') {
     setDisplay(display + memory)

@@ -51,7 +51,7 @@ const style = function () {
 };
 
 export default PrimeiraFuncao = function () {
-  const [memory, setMemory] = React.useState("");
+  const [memory, setMemory] = React.useState(0);
   const [display, setDisplay] = React.useState(0);
   const [lastOperation, setOperation] = React.useState("");
   return (
@@ -182,11 +182,23 @@ export default PrimeiraFuncao = function () {
         <Pressable
           style={style().Button}
           onPress={() =>
-            Multiplicacao(
+            Divisao(
+              memory,
               display,
-              setDisplay,
               setMemory,
               setDisplay,
+              setOperation
+            )
+          }
+        >
+          <Text style={style().Text}>÷</Text>
+        </Pressable>
+        <Pressable
+          style={style().Button}
+          onPress={() =>
+            reset(
+              setDisplay,
+              setMemory,
               setOperation
             )
           }
