@@ -1,14 +1,16 @@
 
 
 export const Soma = (memory, display, setMemory, setDisplay, setOperation) => {
-  memory = parseInt(memory)
-  display = parseInt(display)
-  setMemory(memory + display)
-  console.log(memory)
-  setDisplay(memory)
+  const memoryInt = parseInt(memory)
+  const displayInt = parseInt(display)
+  const result = memoryInt + displayInt
+  setMemory(result)
+  console.log(displayInt)
+  setDisplay(0)
   setOperation('+')
   return true;
 };
+
 
 export const Subtracao = (memory, display, setMemory, setDisplay, setOperation) => {
   setMemory(memory+display)
@@ -46,7 +48,7 @@ export const atualizarDisplay = (display, value, setDisplay) => {
     return true
 }
 
-export const reset(setDisplay,setMemory,setOperation){
+export const reset = (setDisplay,setMemory,setOperation) => {
   setDisplay(0)
   setMemory(0)
   setOperation('')
