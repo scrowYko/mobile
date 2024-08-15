@@ -51,6 +51,12 @@ const style = function () {
       borderRadius: 4,
       border: 'solid #000000 3px',
       padding: 6
+    },
+    list:{
+      flex: 1,
+      gap: 10,
+      height: 200,
+      marginTop: 10
     }
   };
 };
@@ -78,10 +84,11 @@ export default function listaTarefas() {
       </View>
       <FlatList
         data={tarefas}
+        
         renderItem={({ item }) => {
           console.log(item);
           return (
-            <Text >
+            <Text style={style().list}>
               <Pressable style={item.isDone == true ? style().isDone : style().notDone}
                 onPress={() => alterBoolean(item.id, tarefas, atualizarTarefas)}
               >
