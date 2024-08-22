@@ -11,15 +11,17 @@ export default function InputValor({ value, onChangeValue }) {
       flex:{
         flex: 1,
         flexDirection: 'row',
-        gap: 10
+        gap: 5,
+        justifyContent: 'center',
+        alignContent: 'center',
       },
       input: {
-        height: 60, // Altura do campo de entrada
-        fontSize: 24, // Tamanho do texto digitado
+        height: 40, // Altura do campo de entrada
+        fontSize: 14, // Tamanho do texto digitado
         borderColor: 'gray',
         borderWidth: 1,
         paddingHorizontal: 10,
-        width: '80%', // Largura do campo de entrada
+        width: 220, // Largura do campo de entrada
       },
     };
   };
