@@ -1,100 +1,158 @@
-import { React, useState } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  Pressable,
-  FlatList,
-  Image,
-} from "react-native";
-import Saldo from "../../components/Saldo";
-import Input from "../../components/Input";
+import React from "react";
+import { View, Pressable, TextInput, Text, StyleSheet } from "react-native";
+import { useState } from "react";
 
-const style = function () {
-  return {
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    image: {
-      width: 340,
-      height: 80,
-    },
-    naConta: {
-      color: "gray",
-      fontWeight: "bold",
-      fontSize: 20,
-    },
-    dindin: {
-      width: 120,
-      height: 200,
-      fontSize: 30,
-    },
-    button: {
-      width: 160,
-      height: 40,
-    },
-    container2: {
-      flex: 1,
-      height: 75,
-      gap: 12,
-    },
-    containerLogo: {
-      height: 200,
-    },
+const style = StyleSheet.create({
+  input: {
+    width: 200,
+    height: 30,
+    fontSize: 18,
+    borderColor: "black",
+    borderWidth: 1,
+    padding: 3,
+  },
+  view: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "column",
+  },
+  inputContainer: {
+    gap: 5,
+    borderColor: "black",
+    borderRadius: 5,
+    borderWidth: 1,
+    padding: 10,
+    marginBottom: 5,
+  },
+  inputContainer2: {
+    borderColor: "black",
+    borderRadius: 25,
+    padding: 10,
+  },
+  inputText: {
+    fontSize: 17,
+  },
+  button: {
+    width: 90,
+    height: 30,
+    backgroundColor: "#075EBF",
+    textColor: "#FFFFFF",
+    flex:1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    padding:5,
+    borderRadius: 5,
+  },
+  inputsContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
+    flexDirection: "column",
+  },
+  text: {
+    textColor: "#FFFFFF",
+    alignSelf:'center'
+  },
+  header:{
+    marginTop: 20,
+  },
+  title:{
+    fontSize: 21,
+    fontWeight:'bold',
+    alignSelf:'center'
+  }
+});
+
+export default function signUp() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [message, setMessage] = useState(null);
+
+  const handleSubmit = async () => {
+    if (!formData.name || !formData.email || !formData.password) {
+      alert("Todos os campos devem ser preenchidos");
+    }
+    try {
+      const response = await fetch(
+        "https://taskhub-s37f.onrender.com/auth/signup",
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      switch (response.status) {
+        case 200:
+          alert('Registro bem sucedido')
+          break;
+        case 496:
+          alert('Falta informação')
+          break;
+        case 409:
+          alert('Email já existente')
+          break;
+        default:
+          alert('Erro!')
+          break;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    
   };
-};
-
-const deposito = (saldo, setSaldo, value, onChangeValue) => {
-  value = parseFloat(value);
-  let valorComBonus = value + value * (1 / 100);
-  let novoSaldo = saldo + valorComBonus;
-  setSaldo(novoSaldo);
-  onChangeValue(0);
-};
-
-const saque = (saldo, setSaldo, value, onChangeValue) => {
-  value = parseFloat(value);
-  let taxeHaddad = value + value * (2.5 / 100);
-  let novoSaldo = saldo - taxeHaddad;
-  setSaldo(novoSaldo);
-  onChangeValue(0);
-};
-
-export default function listaTarefas() {
-  const [saldo, setSaldo] = useState(7320.92);
-  const [value, onChangeValue] = useState(0);
-
   return (
-    <View style={style().container}>
-      <View style={style().containerLogo}>
-        <Image
-          style={style().image}
-          source={require("../../assets/images/santander2.png")}
-        />
+    <>
+      <View style={style.view}>
+        <View style= {style.header}>
+          <Text style={style.title}>Task Hub</Text>
+          <Text>Crie seu usuário enviando nome, email e senha</Text>
+        </View>
+        <View style={style.inputsContainer}>
+          <View style={style.inputContainer}>
+            <Text style={style.inputText}>Name</Text>
+            <TextInput
+              value={formData.name}
+              onChangeText={(text) => setFormData({ ...formData, name: text })}
+              placeholder="Enter your name here"
+              style={style.input}
+              inlineImageLeft="user.png"
+            />
+          </View>
+          <View style={style.inputContainer}>
+            <Text style={style.inputText}>Email</Text>
+            <TextInput
+              value={formData.email}
+              onChangeText={(text) => setFormData({ ...formData, email: text })}
+              placeholder="Enter your email here"
+              style={style.input}
+            />
+          </View>
+          <View style={style.inputContainer}>
+            <Text style={style.inputText}>Password</Text>
+            <TextInput
+              value={formData.password}
+              onChangeText={(text) =>
+                setFormData({ ...formData, password: text })
+              }
+              placeholder="Enter your password here"
+              style={style.input}
+            />
+          </View>
+        </View>
+        <View style={style.inputContainer2}>
+          <Pressable style={style.button} onPress={() => handleSubmit()}>
+            <Text style={style.text}>Sign Up</Text>
+          </Pressable>
+        </View>
       </View>
-
-      <Text style={style().naConta}>SALDO ATUAL NA CONTA</Text>
-      <Saldo style={style().dindin} saldo={saldo} />
-      <Text>Digite o valor abaixo e escolha uma das operações bancárias:</Text>
-      <View style={style().container2}>
-        <Input value={value} onChangeValue={onChangeValue} />
-      </View>
-      <View style={style().container2}>
-        <Pressable
-          onPress={() => deposito(saldo, setSaldo, value, onChangeValue)}
-          style={style().button}
-        >
-          <Text>Depositar valor do campo</Text>
-        </Pressable>
-        <Pressable
-          onPress={() => saque(saldo, setSaldo, value, onChangeValue)}
-          style={style().button}
-        >
-          <Text>Sacar valor do campo</Text>
-        </Pressable>
-      </View>
-    </View>
+    </>
   );
 }
