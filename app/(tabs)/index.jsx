@@ -1,158 +1,110 @@
-import React from "react";
-import { View, Pressable, TextInput, Text, StyleSheet } from "react-native";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ImageBackground } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import backgroundImage from "../../assets/images/bg.jpg";
 
 const style = StyleSheet.create({
-  input: {
-    width: 200,
-    height: 30,
-    fontSize: 18,
-    borderColor: "black",
-    borderWidth: 1,
-    padding: 3,
-  },
-  view: {
-    flex: 1,
+  viewContainer: {
+    display: "flex",
+    justifyContent: "center",
     alignItems: "center",
-    justifyContent: "space-evenly",
-    flexDirection: "column",
+    marginTop: 10,
   },
-  inputContainer: {
-    gap: 5,
-    borderColor: "black",
+  picker: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    width: 200,
+    height: 15,
+    backgroundColor: "#075EBD",
     borderRadius: 5,
-    borderWidth: 1,
-    padding: 10,
-    marginBottom: 5,
+    color: "white",
+    marginBottom: 20,
   },
-  inputContainer2: {
-    borderColor: "black",
-    borderRadius: 25,
-    padding: 10,
-  },
-  inputText: {
-    fontSize: 17,
-  },
-  button: {
-    width: 90,
-    height: 30,
-    backgroundColor: "#075EBF",
-    textColor: "#FFFFFF",
-    flex:1,
+  backgroundImage: {
+    flex: 1,
     justifyContent: 'center',
     alignContent: 'center',
-    padding:5,
-    borderRadius: 5,
-  },
-  inputsContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignContent: "center",
-    flexDirection: "column",
   },
   text: {
-    textColor: "#FFFFFF",
-    alignSelf:'center'
-  },
-  header:{
-    marginTop: 20,
-  },
-  title:{
-    fontSize: 21,
-    fontWeight:'bold',
-    alignSelf:'center'
+    justifyContent: 'center',
+    height: 120,
+    padding: 10,
+    width: 220,
+    color: 'white',
+    textTransform: 'uppercase',
+    fontSize: 24,
+    borderRadius: 5,
+    backgroundColor: 'red',
+    textAlign: 'center'
   }
 });
 
-export default function signUp() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+export default function Pokemon() {
+  const [pokemons, setPokemons] = useState([]);
+  const [types, setTypes] = useState([]);
+  //   const listaPokemon = [
+  //     { id: 1, nome: "Charizard" },
+  //     { id: 2, nome: "Blastoise" },
+  //     { id: 3, nome: "Venusaur" },
+  //   ];
+  const [pokemon, handlePokemon] = useState("");
+  const [typeSelected, handleType] = useState("");
 
-  const [message, setMessage] = useState(null);
+  useEffect(() => {
+    fetch("https://pokeapi.co/api/v2/type")
+      .then((res) => res.json())
+      .then((data) => {
+        setTypes(data.results);
+        console.log(data.results);
+      })
+      .catch((error) => console.log("404 not found"));
+  }, []);
 
-  const handleSubmit = async () => {
-    if (!formData.name || !formData.email || !formData.password) {
-      alert("Todos os campos devem ser preenchidos");
+  useEffect(() => {
+    if (typeSelected) {
+      fetch(typeSelected)
+        .then((res) => res.json())
+        .then((data) => {;
+          setPokemons(data.pokemon);
+          console.log(data.pokemon)
+        })
+        .catch((error) => console.log("404 not found"));
     }
-    try {
-      const response = await fetch(
-        "https://taskhub-s37f.onrender.com/auth/signup",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-      switch (response.status) {
-        case 200:
-          alert('Registro bem sucedido')
-          break;
-        case 496:
-          alert('Falta informação')
-          break;
-        case 409:
-          alert('Email já existente')
-          break;
-        default:
-          alert('Erro!')
-          break;
-      }
-    } catch (error) {
-      console.error(error);
-    }
-    
-  };
+  }, [typeSelected]);
+
   return (
-    <>
-      <View style={style.view}>
-        <View style= {style.header}>
-          <Text style={style.title}>Task Hub</Text>
-          <Text>Crie seu usuário enviando nome, email e senha</Text>
-        </View>
-        <View style={style.inputsContainer}>
-          <View style={style.inputContainer}>
-            <Text style={style.inputText}>Name</Text>
-            <TextInput
-              value={formData.name}
-              onChangeText={(text) => setFormData({ ...formData, name: text })}
-              placeholder="Enter your name here"
-              style={style.input}
-              inlineImageLeft="user.png"
+    <ImageBackground source={backgroundImage} style={style.backgroundImage}>
+      <SafeAreaView style={style.viewContainer}>
+        <Text style={style.text}>Selecione</Text>
+        <Picker
+          selectedValue={typeSelected}
+          onValueChange={(item) => handleType(item)}
+          style={style.picker}
+        >
+          <Picker.Item label="Selecione um tipo" />
+          {types.map((item, index) => (
+            <Picker.Item key={index} label={item.name} value={item.url} />
+          ))}
+        </Picker>
+        <Picker
+          selectedValue={pokemon}
+          onValueChange={(item) => handlePokemon(item)}
+          style={style.picker}
+        >
+          <Picker.Item label="Selecione um pokemon" />
+          {pokemons.map((item, index) => (
+            <Picker.Item
+              key={index}
+              label={item.pokemon.name}
+              value={item.pokemon.name}
             />
-          </View>
-          <View style={style.inputContainer}>
-            <Text style={style.inputText}>Email</Text>
-            <TextInput
-              value={formData.email}
-              onChangeText={(text) => setFormData({ ...formData, email: text })}
-              placeholder="Enter your email here"
-              style={style.input}
-            />
-          </View>
-          <View style={style.inputContainer}>
-            <Text style={style.inputText}>Password</Text>
-            <TextInput
-              value={formData.password}
-              onChangeText={(text) =>
-                setFormData({ ...formData, password: text })
-              }
-              placeholder="Enter your password here"
-              style={style.input}
-            />
-          </View>
-        </View>
-        <View style={style.inputContainer2}>
-          <Pressable style={style.button} onPress={() => handleSubmit()}>
-            <Text style={style.text}>Sign Up</Text>
-          </Pressable>
-        </View>
-      </View>
-    </>
+          ))}
+        </Picker>
+        {pokemon ? <Text style={style.text}> Você selecionou {pokemon}</Text> : ""}
+      </SafeAreaView>
+    </ImageBackground>
   );
 }
