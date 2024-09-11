@@ -30,7 +30,19 @@ const style = StyleSheet.create({
   },
   text: {
     justifyContent: 'center',
-    height: 120,
+    height: 80,
+    padding: 10,
+    width: 220,
+    color: 'white',
+    textTransform: 'uppercase',
+    fontSize: 24,
+    borderRadius: 5,
+    backgroundColor: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
+  },
+  text2: {
+    justifyContent: 'center',
     padding: 10,
     width: 220,
     color: 'white',
@@ -39,7 +51,7 @@ const style = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'red',
     textAlign: 'center'
-  }
+  },
 });
 
 export default function Pokemon() {
@@ -78,7 +90,7 @@ export default function Pokemon() {
   return (
     <ImageBackground source={backgroundImage} style={style.backgroundImage}>
       <SafeAreaView style={style.viewContainer}>
-        <Text style={style.text}>Selecione</Text>
+        <Text style={style.text}>Selecione um pokemon</Text>
         <Picker
           selectedValue={typeSelected}
           onValueChange={(item) => handleType(item)}
@@ -103,7 +115,7 @@ export default function Pokemon() {
             />
           ))}
         </Picker>
-        {pokemon ? <Text style={style.text}> Você selecionou {pokemon}</Text> : ""}
+        {pokemon ? <Text style={style.text2}> Você selecionou {pokemon}</Text> : ""}
       </SafeAreaView>
     </ImageBackground>
   );
