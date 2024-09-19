@@ -22,7 +22,7 @@ const style = StyleSheet.create({
 
     },
     navbar: {
-        backgroundColor: '#5DD08F',
+        backgroundColor: '#315978',
         padding: 20
     },
     title: {
@@ -39,7 +39,10 @@ const style = StyleSheet.create({
         borderRadius:10,
         padding:20,
         width:100,
-        backgroundColor: '#5DD08F'
+        height: 'auto',
+        backgroundColor: '#FFFFFF',
+        borderColor: '#000000',
+        borderWidth: 1,
     },
     box2:{
         display:'flex',
@@ -70,7 +73,7 @@ export default Sobre = function () {
             </View>
             <View style={style.box2}>
                 <Link href="/Pages/pag2/Agentes" style={style.botao}>
-                    <Text>Logos que eu acho legais de agentes</Text>
+                    <Text>Logos que eu acho legais de Agentes do R6</Text>
                 </Link>
                 <Link href="/Pages/pag3/Jogos" style={style.botao}>
                     <Text >Jogos</Text>
