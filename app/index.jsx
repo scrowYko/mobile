@@ -36,6 +36,9 @@ export default function Home() {
             <Link href="/Pages/pag1/Sobre">
                 <Text style={styles.texto}>Sobre mim</Text>
             </Link>
+            <Link href="/Pages/pag1/iFome/home">
+                <Text style={styles.texto}>iFome</Text>
+            </Link>
         </View>
     );
 }
