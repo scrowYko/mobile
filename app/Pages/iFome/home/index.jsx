@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { View, Text, Pressable, Image, StyleSheet, FlatList } from "react-native-web";
 import { AppContext, AppProvider } from "../../../../scripts/appContext";
 import { Link } from "expo-router";
@@ -22,11 +22,13 @@ const produtos = [
 
 export default function App() {
     const { cart, setCart } = useContext(AppContext)
+    const [cartLenght, setCartLength] = useState(0)
 
     function pushCart(item) {
         setCart([...cart, item])
-        console.log(cart)
     }
+
+    useEffect(() => { if (cart.length) { setCartLength(cart.length); } console.log(cart.length) }, [cart])
 
     const renderItem = ({ item }) => (
         <View style={styles.produtoContainer}>
@@ -34,7 +36,7 @@ export default function App() {
             <View style={styles.produtoInfo}>
                 <Text style={styles.produtoNome}>{item.nome}</Text>
                 <Text style={styles.produtoEstabelecimento}>{item.estabelecimento}</Text>
-                <Text style={styles.produtoPreco}>R${item.preco.toString().replace('.',',')}</Text>
+                <Text style={styles.produtoPreco}>R${item.preco.toString().replace('.', ',')}</Text>
                 <Pressable style={styles.comprarButton} onPress={() => pushCart(item)}>
                     <Text style={styles.comprarButtonText}>Comprar</Text>
                 </Pressable>
@@ -53,7 +55,7 @@ export default function App() {
                     style={styles.carrinhoImagem}
                 /></Link>
 
-                <Text style={styles.carrinhoTexto}>{cart.lenght > 0 ? `${cart.lenght}` : '0 Produtos'}</Text>
+                <Text style={styles.carrinhoTexto}>{`${cartLenght} produtos`}</Text>
             </View>
             <FlatList
                 data={produtos}

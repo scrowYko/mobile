@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { View, Text, Image, FlatList, Pressable, StyleSheet, Link } from 'react-native';
+import { View, Text, Image, FlatList, Pressable, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
 import { AppContext } from '../../../../scripts/appContext';
-
 
 
 export default function Cart() {
@@ -31,7 +31,7 @@ export default function Cart() {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Link href={'../home'} >
-                    <Text style={styles.voltarTexto}>{'< Voltar'}</Text>
+                    <Text style={styles.voltarTexto}>Voltar</Text>
                 </Link>
                 <Text style={styles.headerTexto}>Carrinho</Text>
             </View>
@@ -122,3 +122,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
+
