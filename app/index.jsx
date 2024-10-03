@@ -42,6 +42,9 @@ export default function Home() {
             <Link href="/Pages/galeria">
                 <Text style={styles.texto}>Software: Galeria</Text>
             </Link>
+            <Link href="/Pages/camera">
+                <Text style={styles.texto}>Hardware: Câmera</Text>
+            </Link>
         </View>
     );
 }

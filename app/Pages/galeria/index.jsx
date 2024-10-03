@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
         height: 120
     },
     button: {
-        position: relative,
-        display: inline - block,
+        position: 'relative',
+        display: 'flex',
         margin: 20,
     },
 })
