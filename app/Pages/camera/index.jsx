@@ -46,15 +46,14 @@ export default function Camera() {
     setFoto(null);
   };
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = (data) => {
     setScanned(true);
     setUri(data);
-    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+    console.log(data);
+    Linking.canOpenURL(data.data) == true ? Linking.openURL(data.data) : null;
   };
 
-  // useEffect(() => {
-  //   Linking.canOpenURL(uriScan) == true ? Linking.openURL(uriScan) : null;
-  // },[uriScan])
+
 
 
   // console.log(foto);
@@ -68,7 +67,7 @@ export default function Camera() {
           <Button onPress={salvarFoto} title="Salvar foto" />
         </View>
       ) : (
-        <CameraView facing={lado} style={style.camera} ref={cameraRef} barcodeScannerSettings={{ barcodeTypes: ['qr'],}} onBarCodeScanned={scanned ? handleBarCodeScanned : undefined} >
+        <CameraView facing={lado} style={style.camera} ref={cameraRef} barcodeScannerSettings={{ barcodeTypes: ["qr"],}} onBarcodeScanned={(data) => handleBarCodeScanned(data)} >
           <Pressable onPress={tirarFoto}>
             <Text>Tirar foto</Text>
           </Pressable>
