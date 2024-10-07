@@ -1,25 +1,16 @@
 import { React, useState, useEffect, useRef } from "react";
-import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable, Button } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
+import * as MediaLibrary from "expo-media-library";
+import * as Linking from 'expo-linking'
 
 export default function Camera() {
   const [foto, setFoto] = useState(null);
   const [permissao, pedirPermissao] = useCameraPermissions();
   const cameraRef = useRef(null);
   const [lado, setLado] = useState("back");
-
-  const tirarFoto = async () => {
-    const fotoBase64 = await cameraRef.current?.takePictureAsync({
-      quality: 0.5,
-      base64: true,
-    });
-    setFoto(fotoBase64);
-    console.log(foto);
-  };
-
-  const trocaCamera = () => {
-    setLado(lado == "back" ? "front" : "back");
-  };
+  const [scanned, setScanned] = useState(false)
+  const [uriScan, setUri] = useState('')
 
   if (!permissao) {
     return <View></View>;
@@ -37,21 +28,51 @@ export default function Camera() {
     );
   }
 
+  const tirarFoto = async () => {
+    const fotoBase64 = await cameraRef.current?.takePictureAsync({
+      quality: 0.5,
+      base64: true,
+    });
+    setFoto(fotoBase64);
+    // console.log(fotoBase64);
+  };
+
+  const trocaCamera = () => {
+    setLado(lado == "back" ? "front" : "back");
+  };
+
+  const salvarFoto = () => {
+    MediaLibrary.saveToLibraryAsync(foto.uri);
+    setFoto(null);
+  };
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    setUri(data);
+    console.log(`Bar code with type ${type} and data ${data} has been scanned!`);
+  };
+
+  // useEffect(() => {
+  //   Linking.canOpenURL(uriScan) == true ? Linking.openURL(uriScan) : null;
+  // },[uriScan])
+
+
+  // console.log(foto);
+
   return (
     <View style={style.container}>
       {foto ? (
-        <View>
-          <Image source={{ uri: pic.uri }} style={style.foto} />
-          <Pressable onPress={setFoto(null)} style={style.button}>
-            <Text style={style.buttonText}>Limpar foto</Text>
-          </Pressable>
+        <View style={style.container}>
+          <Image source={{ uri: foto.uri }} style={style.foto} />
+          <Button onPress={() => setFoto(null)} title="Limpar foto" />
+          <Button onPress={salvarFoto} title="Salvar foto" />
         </View>
       ) : (
-        <CameraView facing={lado} style={style.camera} ref={cameraRef}>
+        <CameraView facing={lado} style={style.camera} ref={cameraRef} barcodeScannerSettings={{ barcodeTypes: ['qr'],}} onBarCodeScanned={scanned ? handleBarCodeScanned : undefined} >
           <Pressable onPress={tirarFoto}>
             <Text>Tirar foto</Text>
           </Pressable>
-          <Pressable onPress={() => trocaCamera}>
+          <Pressable onPress={trocaCamera}>
             <Text>Inverter Câmera</Text>
           </Pressable>
         </CameraView>
@@ -71,8 +92,8 @@ const style = StyleSheet.create({
   button: {
     backgroundColor: "#69BA5D",
     borderRadius: 10,
-    width: 120,
-    height: 40,
+    width: "40%",
+    height: "10%",
     padding: 5,
   },
   buttonText: {
@@ -86,6 +107,6 @@ const style = StyleSheet.create({
   },
   foto: {
     width: "100%",
-    height: "100%",
+    height: "80%",
   },
 });
