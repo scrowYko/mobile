@@ -49,11 +49,10 @@ export default function Camera() {
   const handleBarCodeScanned = (data) => {
     setScanned(true);
     setUri(data);
-    console.log(data);
-    Linking.canOpenURL(data.data) == true ? Linking.openURL(data.data) : null;
+    if(Linking.canOpenURL(data.raw)){
+      Linking.openURL(data.raw)
+    }
   };
-
-
 
 
   // console.log(foto);
@@ -68,11 +67,11 @@ export default function Camera() {
         </View>
       ) : (
         <CameraView facing={lado} style={style.camera} ref={cameraRef} barcodeScannerSettings={{ barcodeTypes: ["qr"],}} onBarcodeScanned={(data) => handleBarCodeScanned(data)} >
-          <Pressable onPress={tirarFoto}>
-            <Text>Tirar foto</Text>
+          <Pressable onPress={tirarFoto} style={style.tirarFoto}>
+            <Text>📸</Text>
           </Pressable>
-          <Pressable onPress={trocaCamera}>
-            <Text>Inverter Câmera</Text>
+          <Pressable onPress={trocaCamera} style={style.trocaCamera}>
+            <Text>🔄</Text>
           </Pressable>
         </CameraView>
       )}
@@ -83,29 +82,54 @@ export default function Camera() {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
   },
   textoPermissão: {
     fontSize: 21,
+    color: "#FFF",
+    textAlign: "center",
+    padding: 10,
   },
   button: {
     backgroundColor: "#69BA5D",
     borderRadius: 10,
-    width: "40%",
-    height: "10%",
-    padding: 5,
+    width: "60%",
+    padding: 10,
+    alignItems: "center",
   },
   buttonText: {
-    fontSize: 14,
+    fontSize: 16,
+    color: "#FFF",
   },
   camera: {
     flex: 1,
+    width: "100%",
+    borderRadius: 20,
+    overflow: "hidden",
+    justifyContent: "flex-end",
+    alignItems: 'center',
+    paddingBottom: '5%'
   },
   tirarFoto: {
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFFAA",
+    borderRadius: 50,
+    padding: 15,
+    width: "15%",
+    alignItems: 'center',
+  },
+  trocaCamera: {
+    backgroundColor: "#FFFFFFAA",
+    borderRadius: 50,
+    padding: 15,
+    width: "15%",
+    alignItems: 'center',
   },
   foto: {
     width: "100%",
     height: "80%",
+    borderRadius: 10,
+  },
+  textButton:{
+    fontSize: 24,
+    color: "#000",
   },
 });
